@@ -14,35 +14,31 @@ enum AppTheme: String, CaseIterable {
 }
 
 struct SettingsView: View {
-    @AppStorage("fontSize") var fontSize: Double = 1
-    @AppStorage("selectedColor") var selectedColor: AppTheme = .Red
     @StateObject var settingsViewModel: SettingsViewModel = SettingsViewModel()
     
     var body: some View {
         NavigationView {
             VStack (alignment: .leading) {
-                Text("Font Size: \(String(format: "%.1f", fontSize)) X")
-                Slider(value: $fontSize, in: 0.1...2)
-                    .onChange(of: fontSize) { newValue in
-//                        UserDefaults.standard.set(newValue, forKey: "fontSize")
-                        fontSize = newValue
+                Text("Font Size: \(String(format: "%.1f", settingsViewModel.fontSize)) X")
+                Slider(value: settingsViewModel.$fontSize, in: 0.1...2)
+                    .onChange(of: settingsViewModel.fontSize) { newValue in
+                        settingsViewModel.fontSize = newValue
                     }
-//                    .tint(Color(selectedColor.rawValue))
                 
                 HStack {
                     Text("System Color")
-                        .font(.system(size: 18 * fontSize))
-                    Picker("Please choose a color", selection: $selectedColor) {
+                        .font(.system(size: 18 * settingsViewModel.fontSize))
+                    Picker("Please choose a color", selection: settingsViewModel.$selectedColor) {
                         ForEach(AppTheme.allCases, id: \.self) { color in
                             Text(color.rawValue)
-                                .font(.system(size: 18 * fontSize))
+                                .font(.system(size: 18 * settingsViewModel.fontSize))
                         }
                     }
                     .pickerStyle(.wheel)
                     
                     Rectangle()
                         .frame(width: 40, height: 40)
-                        .foregroundColor(settingsViewModel.getColor(for: selectedColor.rawValue))
+                        .foregroundColor(Color(settingsViewModel.selectedColor.rawValue))
                         .cornerRadius(10)
                 }
                 
@@ -50,10 +46,6 @@ struct SettingsView: View {
             }
             .padding()
             .navigationTitle("Settings")
-            .onAppear {
-                print("Current font size: \(fontSize)")
-                print("Current selected color: \(selectedColor)")
-            }
         }
     }
 }

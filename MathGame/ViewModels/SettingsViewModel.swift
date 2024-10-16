@@ -8,18 +8,6 @@
 import SwiftUI
 
 class SettingsViewModel: ObservableObject {
-    func getColor(for name: String) -> Color {
-            switch name {
-            case "Red":
-                return .red
-            case "Green":
-                return .green
-            case "Blue":
-                return .blue
-            case "Tartan":
-                return Color(red: 0.5, green: 0.5, blue: 0.5)
-            default:
-                return .black
-            }
-        }
+    @AppStorage("fontSize") var fontSize: Double = 1
+    @AppStorage("selectedColor") var selectedColor: AppTheme = .Red
 }

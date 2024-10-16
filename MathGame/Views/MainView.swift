@@ -9,8 +9,6 @@ import SwiftUI
 
 struct MainView: View {
     @State var marks = 0
-    @AppStorage("selectedColor") var selectedColor: String = "Red"
-    @AppStorage("fontSize") var fontSize: Double = 1
     @StateObject var settingsViewModel = SettingsViewModel()
     
     var body: some View {
@@ -28,7 +26,7 @@ struct MainView: View {
                     Label("Settings", systemImage: "gear.circle.fill")
                 }
         }
-        .accentColor(settingsViewModel.getColor(for: selectedColor))
+        .accentColor(Color(settingsViewModel.selectedColor.rawValue))
     }
 }
 
